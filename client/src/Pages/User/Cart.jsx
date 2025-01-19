@@ -3,7 +3,11 @@ import { RiShoppingCart2Line } from "react-icons/ri";
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { TbShoppingCartMinus, TbShoppingCartPlus } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, deleteCart, removeFromCart } from "../../Redux/CartSlice";
+import {
+  deleteCart,
+  removeFromCart,
+  updateQuantity,
+} from "../../Redux/CartSlice";
 import { useNavigate } from "react-router-dom";
 import { addOrder } from "../../Redux/OrderSlice";
 
@@ -11,21 +15,27 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = useSelector((state) => state.auth.user._id);
-  // console.log(id);
+  console.log(id);
 
   const deliveryCharge = 20;
   const cart = useSelector((state) => state.cart);
   console.log("carttt", cart);
 
   const subtotal = cart.totalPrice + deliveryCharge;
+
   // quantity change
-  const handleQuantityChange = (productId, quantity) => {
-    // console.log("shadfasdg", id, productId, quantity);
+  const handleQuantityChange = (productId, quantity, price) => {
+    console.log("shadfasdg", id, productId, quantity);
+    if (quantity <= 0) {
+      alert("Quantity must be greater than 0");
+      return;
+    }
     const cartData = {
-      productId: productId,
+      product: productId,
       quantity: quantity,
+      price: price,
     };
-    dispatch(addToCart({ id, cartData }));
+    dispatch(updateQuantity({ id, cartData }));
   };
   //remove item
   const handleRemoveItem = (productId) => {
@@ -50,7 +60,7 @@ const Cart = () => {
       };
       console.log("order", orderData);
       await dispatch(addOrder({ id, orderData }));
-      navigate('/user/placeorder')
+      navigate("/user/placeorder");
     } catch (error) {
       console.log("error in place order", error);
     }
@@ -95,7 +105,13 @@ const Cart = () => {
                 </div>
                 <div className="flex-row flex h-fit">
                   <button
-                    onClick={() => handleQuantityChange(item.product._id, 1)}
+                    onClick={() =>
+                      handleQuantityChange(
+                        item.product._id,
+                        item.quantity + 1,
+                        item.price
+                      )
+                    }
                     className="p-1 m-1 w-16 font-Merriweather text-white text-xl flex justify-center items-center hover:scale-105 bg-orange-400 rounded-lg"
                   >
                     <TbShoppingCartPlus />
@@ -104,7 +120,13 @@ const Cart = () => {
                     {item.quantity}
                   </div>
                   <button
-                    onClick={() => handleQuantityChange(item.product._id, -1)}
+                    onClick={() =>
+                      handleQuantityChange(
+                        item.product._id,
+                        item.quantity - 1,
+                        item.price
+                      )
+                    }
                     className="p-1 m-1 w-16 font-Merriweather text-white flex justify-center text-xl items-center hover:scale-105 bg-orange-400 rounded-lg"
                   >
                     <TbShoppingCartMinus />

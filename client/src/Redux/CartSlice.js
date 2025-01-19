@@ -12,7 +12,8 @@ const initialState = {
 export const addToCart = createAsyncThunk(
   "cart/addtocart",
   async ({ id, cartData }) => {
-    // console.log('data',cartData);
+    console.log("data", cartData);
+    console.log("id", id);
 
     const response = await axios.post(
       `http://localhost:5000/api/cart/addtocart/${id}`,
@@ -21,8 +22,8 @@ export const addToCart = createAsyncThunk(
         withCredentials: true,
       }
     );
-    // console.log(response.data);
-    
+    console.log(response.data);
+
     return response.data;
   }
 );
@@ -59,22 +60,26 @@ export const removeFromCart = createAsyncThunk(
         withCredentials: true,
       }
     );
-    return response.data.cart;
+    return response.data;
   }
 );
 
 // Update quantity of an item
 export const updateQuantity = createAsyncThunk(
   "cart/updateQuantity",
-  async ({ productId, quantity }) => {
-    const response = await axios.put(
-      `http://localhost:5000/api/cart/update/${productId}`,
-      { quantity },
+  async ({ id, cartData }) => {
+    console.log("cart update",id,cartData);
+    
+    const response = await axios.patch(
+      `http://localhost:5000/api/cart/update/${id}`,
+      { cartData },
       {
         withCredentials: true,
       }
     );
-    return response.data.cart;
+    console.log("cart quantity update ", response.data);
+
+    return response.data;
   }
 );
 
@@ -88,24 +93,27 @@ export const fetchCart = createAsyncThunk("cart/fetchCart", async ({ id }) => {
       withCredentials: true,
     }
   );
-  // console.log('cart',response.data.cart.items);
+  console.log('cart fetch',response.data.cart);
 
-  return response.data.cart;
+  return response.data;
 });
 //delete all
-export const deleteCart = createAsyncThunk("cart/deletecart", async ({ id }) => {
-  console.log("idd", id);
+export const deleteCart = createAsyncThunk(
+  "cart/deletecart",
+  async ({ id }) => {
+    console.log("idd", id);
 
-  const response = await axios.delete(
-    `http://localhost:5000/api/cart/deletecart/${id}`,
-    {
-      withCredentials: true,
-    }
-  );
-  // console.log('cart',response.data.cart.items);
+    const response = await axios.delete(
+      `http://localhost:5000/api/cart/deletecart/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log("cart", response.data.cart);
 
-  return response.data.cart;
-});
+    return response.data.cart;
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -125,7 +133,7 @@ const cartSlice = createSlice({
       .addCase(addToCart.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload.cart.items;
-        state.totalPrice = action.payload.cart.totalPrice;
+        state.totalPrice = action.payload.cart.subTotal;
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.isLoading = false;
@@ -137,8 +145,8 @@ const cartSlice = createSlice({
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload.items;
-        state.totalPrice = action.payload.totalPrice;
+        state.items = action.payload.cart.items;
+        state.totalPrice = action.payload.cart.subTotal;
       })
       .addCase(removeFromCart.rejected, (state, action) => {
         state.isLoading = false;
@@ -149,20 +157,20 @@ const cartSlice = createSlice({
       })
       .addCase(updateQuantity.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload.items;
-        state.totalPrice = action.payload.totalPrice;
+        state.items = action.payload.cart.items;
+        state.totalPrice = action.payload.cart.subTotal;
       })
       .addCase(updateQuantity.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message || "An error occurred";
       })
       .addCase(fetchCart.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload.items;
-        state.totalPrice = action.payload.totalPrice;
+        state.items = action.payload.cart.items;
+        state.totalPrice = action.payload.cart.subTotal;
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.isLoading = false;
@@ -173,12 +181,17 @@ const cartSlice = createSlice({
       })
       .addCase(deleteCart.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload.items;
-        state.totalPrice = action.payload.totalPrice;
+
+        // Extract cart safely from the payload
+        const cart = action.payload?.cart || { items: [], subTotal: 0 };
+
+        // Assign the items and totalPrice safely
+        state.items = cart.items || []; // Ensure items is at least an empty array
+        state.totalPrice = cart.subTotal || 0; // Ensure totalPrice defaults to 0
       })
       .addCase(deleteCart.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
       });
   },
 });

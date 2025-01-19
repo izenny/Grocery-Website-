@@ -5,31 +5,32 @@ import { useNavigate } from "react-router-dom";
 
 const Product = ({ products }) => {
   const userId = useSelector((state) => state.auth.user._id);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   console.log("userid", userId);
-  
-  const dispatch = useDispatch();
- const buyProductHandler = async(productId)=>{
-  const cartData = {
-    productId: productId,
-    quantity: 1,
-  };
-  console.log(cartData);
 
-  try {
-    // Dispatch addToCart action with userId and cartData wrapped in an object
-    dispatch(addToCart({ id: userId, cartData }));
-    // Optionally, handle success response if needed
-    navigate('/user/cart')
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-    // Handle error gracefully
-  }
- }
-  const AddToCartHandler = async (productId) => {
+  const dispatch = useDispatch();
+  const buyProductHandler = async (productId) => {
     const cartData = {
       productId: productId,
       quantity: 1,
+    };
+    console.log(cartData);
+
+    try {
+      // Dispatch addToCart action with userId and cartData wrapped in an object
+      dispatch(addToCart({ id: userId, cartData }));
+      // Optionally, handle success response if needed
+      navigate("/user/cart");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      // Handle error gracefully
+    }
+  };
+  const AddToCartHandler = async (productId, price) => {
+    const cartData = {
+      product: productId,
+      quantity: 1,
+      price: price,
     };
     console.log(cartData);
 
@@ -57,12 +58,14 @@ const Product = ({ products }) => {
                 <h1 className="text-lg">{product.price} rs</h1>
               </div>
               <div>
-                <button  onClick={() => buyProductHandler (product._id)}
-                 className="p-1 m-1 w-16 font-Merriweather text-white hover:scale-105 bg-orange-500 rounded-lg">
+                <button
+                  onClick={() => buyProductHandler(product._id)}
+                  className="p-1 m-1 w-16 font-Merriweather text-white hover:scale-105 bg-orange-500 rounded-lg"
+                >
                   Buy
                 </button>
                 <button
-                  onClick={() => AddToCartHandler(product._id)}
+                  onClick={() => AddToCartHandler(product._id, product.price)}
                   className="p-1 m-1 w-16 font-Merriweather text-white hover:scale-105 bg-orange-500 rounded-lg"
                 >
                   Cart

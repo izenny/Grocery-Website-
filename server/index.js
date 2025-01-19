@@ -17,7 +17,7 @@ app.use(
   cors({
     // origin: "*", // Ensure this matches your frontend URL
     origin: "http://localhost:5173", // Ensure this matches your frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Add OPTIONS for preflight requests
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], // Add OPTIONS for preflight requests
     allowedHeaders: [
       "Content-Type",
       "Authorization",
