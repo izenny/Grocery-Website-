@@ -7,6 +7,7 @@ import { Outlet } from 'react-router-dom'
 const UserLayout = () => {
   return (
     <div className="flex flex-col w-full">
+      
       <Navbar />
       <main className=" w-full h-full ">
         <Outlet />

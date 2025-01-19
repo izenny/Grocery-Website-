@@ -26,6 +26,7 @@ const Navbar = () => {
       alert("error");
     }
   };
+  console.log("Navbar is rendering");
   return (
     <div className="flex flex-col h-full w-full">
       <div className="shadow p-1 ">

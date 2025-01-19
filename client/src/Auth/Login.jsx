@@ -60,7 +60,7 @@ const Login = () => {
 
       
   return (
-    <div className='w-full   h-full bg-yellow-300 font-Merriweather flex  justify-center items-center'>
+    <div className='w-full   h-screen bg-yellow-300 font-Merriweather flex  justify-center items-center'>
        <div className="w-[20rem] h-[28rem] flex flex-col justify-around items-center bg-white p-6 rounded-lg shadow">
         <h2 className="text-4xl font-madimione mb-4">Login</h2>
         <form onSubmit={loginData} className="w-full">

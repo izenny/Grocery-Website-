@@ -29,7 +29,6 @@ import Profile from "./Pages/User/Profile";
 import Order from "./Pages/User/Order";
 import PlaceOrder from "./Pages/User/PlaceOrder";
 
-
 const App = () => {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -39,17 +38,13 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(authCheck());
-    
   }, [dispatch]);
   useEffect(() => {
     if (isAuthenticated && user) {
-
-      dispatch(fetchCart({id: user._id}));
+      dispatch(fetchCart({ id: user._id }));
     }
   }, [isAuthenticated, user, dispatch]);
 
-  
-  
   return (
     <div className="h-full w-full  overflow-y-scroll no-scrollbar flex  items-center justify-center  ">
       <Routes>
@@ -98,7 +93,7 @@ const App = () => {
           <Route path="cart" element={<Cart />} />
           <Route path="placeorder" element={<PlaceOrder />} />
 
-          <Route path="profile" element={<Profile/>} />
+          <Route path="profile" element={<Profile />} />
           <Route path="favorites" element={<Start />} />
         </Route>
 
