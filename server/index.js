@@ -15,8 +15,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    // origin: "*", // Ensure this matches your frontend URL
-    origin: "http://localhost:5173", // Ensure this matches your frontend URL
+    origin: "https://grocerywebsites.netlify.app", // Ensure this matches your frontend URL
+    // origin: "http://localhost:5173", // Ensure this matches your frontend URL
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], // Add OPTIONS for preflight requests
     allowedHeaders: [
       "Content-Type",

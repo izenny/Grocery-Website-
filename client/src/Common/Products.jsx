@@ -74,7 +74,8 @@ const Product = ({ products }) => {
             </div>
             <div className="absolute w-[100px] h-[100px] rounded-xl top-[60px] left-[130px]">
               <img
-                src={`/public/${product.image}`} // Ensure image path is correct
+                src={product.image}
+                // src={`/public/${product.image}`} // Ensure image path is correct
                 alt={product.productname}
                 className="h-full w-full object-cover"
               />
