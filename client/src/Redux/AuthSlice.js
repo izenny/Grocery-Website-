@@ -26,6 +26,8 @@ export const loginUser = createAsyncThunk("/auth/login", async (data) => {
       withCredentials: true,
     }
   );
+  console.log("sadasd",response);
+  
   return response.data;
 });
 export const authCheck = createAsyncThunk("/auth/checkauth", async () => {
@@ -75,7 +77,7 @@ const AuthSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.success ? action.payload.user : null;
+        state.user =  action.payload.user;
         state.isAuthenticated = action.payload.success;
       })
       .addCase(loginUser.rejected, (state) => {
