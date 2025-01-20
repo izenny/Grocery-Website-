@@ -119,6 +119,7 @@ const PlaceOrder = () => {
           </div>
 
           <div className="">
+            <button>add Address</button>
             <AddressCard id={id} onSelectAddress={handleSelectAddress} />
           </div>
           <div className="flex justify-center items-center mt-4">
