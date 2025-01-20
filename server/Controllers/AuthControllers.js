@@ -95,27 +95,51 @@ exports.logoutUser = async (req, res) => {
 
 //auth middleware
 
-exports.authMiddleware = async (req, res, next) => {
-    const token = req.cookies.token;
-    // console.log(token);
+// exports.authMiddleware = async (req, res, next) => {
+//     const token = req.cookies.token;
+//     // console.log(token);
     
-    if (!token)
-      return res.json({
-        success: false,
-        message: "Unauthorised user!",
-      });
-    try {
-      const decoded = JWT.verify(token, process.env.JWTKey);
-      req.user = decoded;
-      next();
-    } catch (error) {
-      console.log(error);
+//     if (!token)
+//       return res.json({
+//         success: false,
+//         message: "Unauthorised user!",
+//       });
+//     try {
+//       const decoded = JWT.verify(token, process.env.JWTKey);
+//       req.user = decoded;
+//       next();
+//     } catch (error) {
+//       console.log(error);
       
-      res.json({
-        success: false,
-        message: "some error occured",
-        error,
-      });
-    }
-  };
+//       res.json({
+//         success: false,
+//         message: "some error occured",
+//         error,
+//       });
+//     }
+//   };
   
+exports.authMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
+
+  // Check if token exists
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized: No token provided",
+    });
+  }
+
+  try {
+    // Verify the token
+    const decoded = JWT.verify(token, process.env.JWTKey);
+    req.user = decoded; // Attach decoded user info to the request
+    next(); // Proceed to the next middleware or route handler
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    return res.status(403).json({
+      success: false,
+      message: "Unauthorized: Invalid or expired token",
+    });
+  }
+};
