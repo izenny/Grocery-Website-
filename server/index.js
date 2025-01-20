@@ -16,7 +16,9 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://grocerywebsites.netlify.app", // Ensure this matches your frontend URL
-    // origin: "http://localhost:5173", // Ensure this matches your frontend URL
+    // origin: "http://localhost:5174", // Ensure this matches your frontend URL
+
+    // origin: "*",
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], // Add OPTIONS for preflight requests
     allowedHeaders: [
       "Content-Type",
@@ -28,6 +30,7 @@ app.use(
     credentials: true, // Allow cookies to be sent with requests
   })
 );
+// app.use(cors());
 
 app.use("/api/auth", AuthRoutes);
 app.use("/api/user", UserRoutes);

@@ -33,7 +33,7 @@ const App = () => {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
-  // console.log(user, isAuthenticated, isLoading);
+  console.log(user, isAuthenticated, isLoading);
 
   const dispatch = useDispatch();
   useEffect(() => {
