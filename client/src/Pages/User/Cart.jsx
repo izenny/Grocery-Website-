@@ -14,7 +14,7 @@ import { addOrder } from "../../Redux/OrderSlice";
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const id = useSelector((state) => state.auth.user._id);
+  const id = useSelector((state) => state.auth.user.id);
   console.log(id);
 
   const deliveryCharge = 20;

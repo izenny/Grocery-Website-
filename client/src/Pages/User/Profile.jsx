@@ -4,7 +4,7 @@ import AddressCard from "../../Components/User/AddressCard";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const id = useSelector((state) => state.auth.user._id);
+  const id = useSelector((state) => state.auth.user.id);
 
   return (
     <div className="h-svh justify-center flex  items-center">

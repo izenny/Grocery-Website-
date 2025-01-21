@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const PlaceOrder = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const id = useSelector((state) => state.auth.user._id);
+  const id = useSelector((state) => state.auth.user.id);
   const orderItems = useSelector((state) => state.order.currentOrder);
   console.log("orderitmes", orderItems);
 
