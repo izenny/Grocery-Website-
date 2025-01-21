@@ -15,28 +15,13 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-// app.use(
-//   cors({
-//     origin: "https://grocerywebsites.netlify.app", // Ensure this matches your frontend URL
-//     // origin: "http://localhost:5174", // Ensure this matches your frontend URL
-
-//     // origin: "*",
-//     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], // Add OPTIONS for preflight requests
-//     allowedHeaders: [
-//       "Content-Type",
-//       "Authorization",
-//       "Cache-Control",
-//       "Expires",
-//       "Pragma",
-//     ],
-//     credentials: true, // Allow cookies to be sent with requests
-//   })
-// );
-// app.use(cors());
 app.use(
   cors({
-    origin: "https://grocerywebsites.netlify.app", // Correct frontend URL
-    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    origin: "https://grocerywebsites.netlify.app", // Ensure this matches your frontend URL
+    // origin: "http://localhost:5173", // Ensure this matches your frontend URL
+
+    // origin: "*",
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], // Add OPTIONS for preflight requests
     allowedHeaders: [
       "Content-Type",
       "Authorization",
@@ -44,9 +29,24 @@ app.use(
       "Expires",
       "Pragma",
     ],
-    credentials: true, // This allows cookies to be sent with requests
+    credentials: true, // Allow cookies to be sent with requests
   })
 );
+// app.use(cors());
+// app.use(
+//   cors({
+//     origin: "https://grocerywebsites.netlify.app", // Correct frontend URL
+//     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+//     allowedHeaders: [
+//       "Content-Type",
+//       "Authorization",
+//       "Cache-Control",
+//       "Expires",
+//       "Pragma",
+//     ],
+//     credentials: true, // This allows cookies to be sent with requests
+//   })
+// );
 app.use(bodyParser.json()); app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/auth", AuthRoutes);

@@ -26,7 +26,7 @@ export const loginUser = createAsyncThunk("/auth/login", async (data) => {
       withCredentials: true,
     }
   );
-  console.log("sadasd",response);
+  console.log("sadasd",response.data);
   
   return response.data;
 });

@@ -31,7 +31,7 @@ import PlaceOrder from "./Pages/User/PlaceOrder";
 
 const App = () => {
   const { user, isAuthenticated, isLoading } = useSelector(
-    (state) => state.auth
+    (state) => state?.auth
   );
   console.log(user, isAuthenticated, isLoading);
 
@@ -41,10 +41,9 @@ const App = () => {
   }, [dispatch]);
   useEffect(() => {
     if (isAuthenticated && user) {
-      dispatch(fetchCart({ id: user._id }));
+      dispatch(fetchCart({ id: user?.id })); // Use "id" instead of "_id"
     }
   }, [isAuthenticated, user, dispatch]);
-
   return (
     <div className="h-full w-full  overflow-y-scroll no-scrollbar flex  items-center justify-center  ">
       <Routes>
